@@ -1,0 +1,44 @@
+{
+  "name": "cargowise-eadapter",
+  "version": "0.0.0",
+  "description": "CargoWise eAdapter client",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SteeleConsulting/cargowise-eadapter.git"
+  },
+  "keywords": [
+    "CargoWise",
+    "XML",
+    "Logistics",
+    "EDI"
+  ],
+  "author": "SteeleConsulting",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SteeleConsulting/cargowise-eadapter/issues"
+  },
+  "homepage": "https://github.com/SteeleConsulting/cargowise-eadapter#readme",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "rm -rf dist && tsc"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "soap": "^0.36.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.36",
+    "@types/node-fetch": "^2.5.8",
+    "@types/request": "^2.48.5",
+    "@types/sax": "^1.2.1",
+    "@types/uuid": "^8.3.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  }
+}
