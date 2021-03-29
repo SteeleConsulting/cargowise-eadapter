@@ -1,6 +1,8 @@
 import * as soap from "soap";
+import { v4 as uuid4 } from "uuid";
+import { compressMessage } from "./compressMessage";
 import { Config } from "./config";
-import { eHubGatewayMessage } from "./eHubGatewayMessage";
+import { EHubGatewayMessage } from "./eHubGatewayMessage";
 import { setupSoap } from "./setupSoap";
 
 /**
@@ -33,17 +35,27 @@ export class EAdapterClient {
    */
   async send(messages: (string | SendMessage)[]): Promise<string[]> {
     const eHubMessages = await Promise.all(
-      messages.map((msg) => {
-        const param: SendMessage =
-          typeof msg === "string" ? { message: msg } : msg;
+      messages.map(
+        async (msg): Promise<EHubGatewayMessage> => {
+          const param: SendMessage =
+            typeof msg === "string" ? { message: msg } : msg;
 
-        return eHubGatewayMessage({
-          clientId: param.clientId || this.config.clientId,
-          message: param.message,
-          type: param.type,
-          trackingId: param.trackingId,
-        });
-      })
+          const compressedXml = await compressMessage(param.message);
+          return {
+            attributes: {
+              ClientID: param.clientId || this.config.clientId,
+              TrackingID: param.trackingId || uuid4(),
+              ApplicationCode: param.type === "native-xml" ? "NDM" : "UDM",
+              SchemaName:
+                param.type === "native-xml"
+                  ? "http://www.cargowise.com/Schemas/Native#UniversalInterchange"
+                  : "http://www.cargowise.com/Schemas/Universal/2011/11#UniversalInterchange",
+              SchemaType: "Xml",
+            },
+            $value: compressedXml,
+          };
+        }
+      )
     );
 
     const trackingIds = eHubMessages.map((m) => m.attributes.TrackingID);

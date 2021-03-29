@@ -12,7 +12,7 @@ The eAdapter soap service provides 3 methods:
 2. SendStream - How you send messages into CW1.
 3. ProcessStream - Deprecated
 
-SendStream does not return anything. It simply accepts your message indicating that CW1 received the message. The way you find out what's happened to your message is by using a tracking ID. The client generates a UUID tracking id and sends it with your message. You can then look in the CW1 EDI Interchange to find the status of your message.
+SendStream does not return anything. It simply accepts your message indicating that CW1 received the message. The way you find out what's happened to your message is by using a tracking ID. The client generates a UUID tracking id and sends it with your message. You can then look in the CW1 EDI Interchange to find the status of your message. If you have read access to the CW1 database, you can programmatically track the status and progress of your EDI message.
 
 ## Example
 
